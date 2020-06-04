@@ -1,5 +1,6 @@
 <template>
     <div>
+        {{exerciseDetails.name}}
         <EditExercise
             :exercise-details="exerciseDetails"
         />

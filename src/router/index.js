@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
-import EditExerciseContainer from "../components/exercises/edit-exercise/EditExerciseContainer";
+import EditProgramContainer from "../components/program/edit-program/EditProgramContainer";
 
 Vue.use(VueRouter)
 
@@ -14,7 +14,7 @@ Vue.use(VueRouter)
   {
     path: '/',
     name: 'Test',
-    component: EditExerciseContainer
+    component: EditProgramContainer
   }
 ]
 
