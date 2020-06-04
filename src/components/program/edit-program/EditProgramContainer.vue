@@ -5,7 +5,7 @@
             <button @click="addModule" class="btn btn-sm btn-primary">Add Module</button>
         </div>
         <div v-for="module in program.modules" :key="module.id">
-            <ModuleTable @deleteModule="removeModule" :module="module" />
+            <ModuleTable @deleteModule="removeModule" @addExercise="addExercise" :module="module" />
         </div>
     </div>
 </template>
@@ -38,6 +38,25 @@
                         this.program.modules.splice(index, 1);
                     }
                 });
+            },
+            getModuleIndexById(moduleId) {
+                this.program.modules.forEach((item, index) => {
+                    if (item.id === moduleId) {
+                        return index;
+                    }
+                });
+            },
+            addExercise(moduleId) {
+                const moduleIndex = this.program.modules.findIndex(item => item.id === moduleId);
+                let exercisesLength = this.program.modules[moduleIndex].exercises.length;
+                let blankExercise = {
+                    id: exercisesLength + 1,
+                    name: '',
+                    sets: 0,
+                    reps: 0,
+                    note: ''
+                }
+                this.program.modules[moduleIndex].exercises.push(blankExercise);
             }
         }
     }

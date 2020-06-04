@@ -5,30 +5,19 @@
                 <EditableTHead
                     v-if="module.editable"
                     @deleteModule="$emit('deleteModule', module.id)"
-                    :module-id="module.id"
+                    @addExercise="$emit('addExercise', module.id)"
+                    :module="module"
+                />
+                <ViewTHead
+                    v-else
+                    :module="module"
                 />
             </thead>
             <tbody>
-                <tr v-for="exercise in module.exercises" :key="exercise.id">
-                    <template v-if="editable">
-                        <td><input type="text" v-model="exercise.name"></td>
-                        <td><input type="text" v-model="exercise.sets"></td>
-                        <td><input type="text" v-model="exercise.reps"></td>
-                        <td><input type="text" v-model="exercise.note"></td>
-                        <td>
-                            Edit
-                        </td>
-                    </template>
-                    <template v-else>
-                        <td>{{ exercise.name }}</td>
-                        <td>{{ exercise.sets }}</td>
-                        <td>{{ exercise.reps }}</td>
-                        <td>{{ exercise.note }}</td>
-                        <td>
-                            Edit
-                        </td>
-                    </template>
-                </tr>
+                <template v-for="exercise in module.exercises">
+                    <RowEditable :exercise="exercise" v-if="module.editable" :key="exercise.id" />
+                    <RowView :exercise="exercise" v-else :key="exercise.id" />
+                </template>
             </tbody>
         </table>
     </div>
@@ -36,12 +25,15 @@
 
 <script>
     import EditableTHead from "./EditableTHead";
+    import ViewTHead from "./ViewTHead";
+    import RowEditable from "./RowEditable";
+    import RowView from "./RowView";
     export default {
         name: "ModuleTable.vue",
         props: {
             module: Object
         },
-        components: {EditableTHead}
+        components: {RowView, RowEditable, ViewTHead, EditableTHead}
     }
 </script>
 
