@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <table class="table table-bordered">
-            <thead>
+    <div class="shadow-lg mt-10 mb-20">
+        <table class="table-fixed w-full">
+            <thead class="border bg-gray-100 text-gray-900">
                 <EditableTHead
                     v-if="module.editable"
                     @deleteModule="$emit('deleteModule', module.id)"
@@ -15,7 +15,7 @@
             </thead>
             <tbody>
                 <template v-for="exercise in module.exercises">
-                    <RowEditable :exercise="exercise" v-if="module.editable" :key="exercise.id" />
+                    <RowEditable :exercise="exercise" v-if="module.editable" :key="exercise.id" @deleteExercise="$emit('deleteExercise', exercise.id, module.id)" />
                     <RowView :exercise="exercise" v-else :key="exercise.id" />
                 </template>
             </tbody>

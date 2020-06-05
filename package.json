@@ -3,12 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "build:tailwind": "tailwindcss build src/tailwind.css -o src/tailwind.generated.css",
+    "prestart": "npm run build:tailwind",
+    "prebuild": "npm run build:tailwind",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "bulma": "^0.8.2",
     "core-js": "^3.6.5",
+    "postcss": "^7.0.32",
+    "tailwindcss": "^1.4.6",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0"
   },

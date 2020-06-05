@@ -1,11 +1,9 @@
 <template>
-    <div class="container-fluid">
+    <div class="container mx-auto py-4">
         Editing Program
-        <div class="d-flex">
-            <button @click="addModule" class="btn btn-sm btn-primary">Add Module</button>
-        </div>
+        <button @click="addModule" class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-1 px-4">Add Module</button>
         <div v-for="module in program.modules" :key="module.id">
-            <ModuleTable @deleteModule="removeModule" @addExercise="addExercise" :module="module" />
+            <ModuleTable @deleteModule="removeModule" @addExercise="addExercise" @deleteExercise="deleteExercise" :module="module" />
         </div>
     </div>
 </template>
@@ -49,14 +47,28 @@
             addExercise(moduleId) {
                 const moduleIndex = this.program.modules.findIndex(item => item.id === moduleId);
                 let exercisesLength = this.program.modules[moduleIndex].exercises.length;
+                // Grab the exercise and create a new ID for the exercise
+                // This is all temporary and will need to be replaced with information from a database in the future
+                // TO BE REMOVED AND REPLACED
                 let blankExercise = {
-                    id: exercisesLength + 1,
+                    id: 0,
                     name: '',
                     sets: 0,
                     reps: 0,
                     note: ''
                 }
+                if (exercisesLength > 0) {
+                    const newExericseId = this.program.modules[moduleIndex].exercises[exercisesLength - 1].id + 1;
+                    blankExercise.id = newExericseId;
+                } else {
+                    blankExercise.id = exercisesLength + 1;
+                }
                 this.program.modules[moduleIndex].exercises.push(blankExercise);
+            },
+            deleteExercise(exerciseId, moduleId) {
+                const moduleIndex = this.program.modules.findIndex(item => item.id === moduleId);
+                const exerciseIndex = this.program.modules[moduleIndex].exercises.findIndex(item => item.id === exerciseId);
+                this.program.modules[moduleIndex].exercises.splice(exerciseIndex, 1);
             }
         }
     }
