@@ -1,9 +1,1 @@
-{
-    "version": 3,
-    "mappings": "AACA,SAAS,CAAT,IAAS;AACT,SAAS,CAAT,UAAS;AACT,SAAS,CAAT,SAAS",
-    "sources": [
-        "app.scss"
-    ],
-    "names": [],
-    "file": "app.css"
-}
+{"version":3,"sourceRoot":"","sources":["app.scss"],"names":[],"mappings":"AACA;AACA;AACA","file":"app.css"}

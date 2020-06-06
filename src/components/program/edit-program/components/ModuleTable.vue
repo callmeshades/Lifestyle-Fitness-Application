@@ -1,7 +1,7 @@
 <template>
-    <div class="shadow-lg mt-10 mb-20">
-        <table class="table-fixed w-full">
-            <thead class="border bg-gray-100 text-gray-900">
+    <div class="border shadow-lg mt-10 mb-20 overflow-x-auto">
+        <table class="table-auto w-full">
+            <thead class="bg-gray-100 text-gray-900">
                 <EditableTHead
                     v-if="module.editable"
                     @deleteModule="$emit('deleteModule', module.id)"
