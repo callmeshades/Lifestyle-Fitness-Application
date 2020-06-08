@@ -1,23 +1,33 @@
 <template>
-    <div class="container-fluid py-4">
-        Editing Program
-        <button @click="addModule" class="btn btn-info btn-sm ml-2">Add Module</button>
-        <div v-for="module in program.modules" :key="module.id">
-            <ModuleTable @deleteModule="removeModule" @addExercise="addExercise" @deleteExercise="deleteExercise" :module="module" />
-        </div>
+    <div class="container py-4">
+        <ProgramDetails :program="program" />
+        <ProgramEditor
+            :program="program"
+            @addModule="addModule"
+            @removeModule="removeModule"
+            @addExercise="addExercise"
+            @deleteExercise="deleteExercise"
+        />
     </div>
 </template>
 
 <script>
-    import ModuleTable from "./components/ModuleTable";
+    import ProgramDetails from "./components/ProgramDetails";
+    import ProgramEditor from "./components/ProgramEditor";
     export default {
         name: "EditProgramContainer.vue",
-        components: {ModuleTable},
+        components: {ProgramEditor, ProgramDetails},
         data() {
             return {
                 program: {
-                    modules: []
-                }
+                    name: '',
+                    description: '',
+                    requiresGym: false,
+                    requiresEquipment: false,
+                    modules: [],
+                    notes: []
+                },
+                details: true
             }
         },
         methods: {
