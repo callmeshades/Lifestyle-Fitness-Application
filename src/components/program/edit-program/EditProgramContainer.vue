@@ -1,7 +1,7 @@
 <template>
-    <div class="container mx-auto py-4">
+    <div class="container-fluid py-4">
         Editing Program
-        <button @click="addModule" class="bg-blue-500 hover:bg-blue-700 text-white font-medium py-1 px-4">Add Module</button>
+        <button @click="addModule" class="btn btn-info btn-sm ml-2">Add Module</button>
         <div v-for="module in program.modules" :key="module.id">
             <ModuleTable @deleteModule="removeModule" @addExercise="addExercise" @deleteExercise="deleteExercise" :module="module" />
         </div>
