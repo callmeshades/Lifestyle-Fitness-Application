@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         {{exerciseDetails.name}}
         <EditExercise
             :exercise-details="exerciseDetails"
@@ -19,7 +19,10 @@ export default {
                 notes: '',
                 description: '',
                 images: [],
-                videos: []
+                videos: {
+                    hasVideo: false,
+                    url: ''
+                }
             }
         }
     }

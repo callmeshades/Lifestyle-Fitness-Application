@@ -1,25 +1,41 @@
 <template>
     <div>
-        <div class="d-flex">
-            <button @click="$emit('addModule')" class="btn btn-dark btn-sm">Add Module</button>
+        <div class="d-flex justify-content-between">
+            <ProgramDetailsInformation :program="program"/>
+            <button class="btn btn-light btn-sm" @click="$emit('changeSection')">Edit</button>
+        </div>
+
+        <div class="d-flex justify-content-end mt-2">
+            <button @click="$emit('addModule')" class="btn btn-secondary btn-sm">Add Module</button>
         </div>
         <div v-for="module in program.modules" :key="module.id">
-            <ModuleTable @deleteModule="$emit('removeModule', module.id)" @addExercise="$emit('addExercise', module.id)" @deleteExercise="deleteExercise" :module="module" />
+            <ModuleTable @deleteModule="$emit('removeModule', module.id)" @addExercise="$emit('addExercise', module.id)" @deleteExercise="deleteExercise" :module="module" :all-exercises="allExercises" />
+        </div>
+        
+        <div class="mt-2">
+            <button class="btn btn-block btn-dark"
+                @click="createProgram"
+            >Create Program</button>
         </div>
     </div>
 </template>
 
 <script>
     import ModuleTable from "./ModuleTable";
+    import ProgramDetailsInformation from "./ProgramDetailsInformation";
     export default {
         name: "ProgramEditor.vue",
-        components: {ModuleTable},
+        components: {ProgramDetailsInformation, ModuleTable},
         props: {
-            program: Object
+            program: Object,
+            allExercises: Array
         },
         methods: {
             deleteExercise(exerciseID, moduleID) {
-                this.$emit('deleteExercise', exerciseID, moduleID)
+                this.$emit('deleteExercise', exerciseID, moduleID);
+            },
+            createProgram() {
+                this.$emit('createProgram');
             }
         }
     }

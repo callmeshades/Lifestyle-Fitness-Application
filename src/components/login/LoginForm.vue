@@ -6,7 +6,7 @@
         </div>
         <div class="form-group">
             <label>Password:</label>
-            <input type="text" v-model="loginData.password" class="form-control form-control-lg" required>
+            <input type="password" v-model="loginData.password" class="form-control form-control-lg" required>
         </div>
         <div class="form-group">
             <button class="btn btn-primary btn-lg btn-block">Sign in</button>

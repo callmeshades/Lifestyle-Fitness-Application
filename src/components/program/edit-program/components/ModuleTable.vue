@@ -1,7 +1,8 @@
 <template>
-    <div class="border shadow-lg mt-5 mb-5 overflow-auto">
-        <table class="table table-hover table-borderless">
-            <thead class="bg-dark text-white">
+    <div class="border shadow-lg mt-5 mb-5 table-responsive">
+        <ModuleTitle :module="module" />
+        <table class="table table-hover">
+            <thead class="bg-light text-dark">
                 <EditableTHead
                     v-if="module.editable"
                     @deleteModule="$emit('deleteModule', module.id)"
@@ -15,7 +16,7 @@
             </thead>
             <tbody>
                 <template v-for="exercise in module.exercises">
-                    <RowEditable :exercise="exercise" v-if="module.editable" :key="exercise.id" @deleteExercise="$emit('deleteExercise', exercise.id, module.id)" />
+                    <RowEditable :exercise="exercise" :all-exercises="allExercises" v-if="module.editable" :key="exercise.id" @deleteExercise="$emit('deleteExercise', exercise.id, module.id)" />
                     <RowView :exercise="exercise" v-else :key="exercise.id" />
                 </template>
             </tbody>
@@ -28,12 +29,14 @@
     import ViewTHead from "./ViewTHead";
     import RowEditable from "./RowEditable";
     import RowView from "./RowView";
+    import ModuleTitle from "./ModuleTitle";
     export default {
         name: "ModuleTable.vue",
         props: {
-            module: Object
+            module: Object,
+            allExercises: Array
         },
-        components: {RowView, RowEditable, ViewTHead, EditableTHead}
+        components: {ModuleTitle, RowView, RowEditable, ViewTHead, EditableTHead}
     }
 </script>
 

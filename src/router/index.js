@@ -1,38 +1,71 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
+
+import { checkUserSession, closeUserSession } from '../utils';
+
+
 import Login from '../views/Login.vue'
+import DashboardContainer from '../components/components/DashboardContainer';
 import AllExercises from '../components/exercises/all-exercises/AllExercises';
 import AllPrograms from '../components/program/all-programs/AllPrograms';
 import EditProgramContainer from "../components/program/edit-program/EditProgramContainer";
+import EditExerciseContainer from "../components/exercises/edit-exercise/EditExerciseContainer";
+
 
 Vue.use(VueRouter)
 
+
 const routes = [
-    {
-        path: '/login',
-        name: 'Login',
-        component: Login
+    { path: '/', component: DashboardContainer, name: 'Dashboard',
+        beforeEnter: (to, from, next) => {
+            checkUserSession().then(data => {
+                if (data.authed) {
+                    next();
+                } else {
+                    next({ name: 'Login' })
+                }
+            })
+        },
+        children: [
+            {
+                path: 'all-exercises',
+                component: AllExercises,
+                name: 'AllExercises'
+            },
+            {
+                path: 'all-programs',
+                component: AllPrograms,
+                name: 'AllPrograms'
+            },
+            {
+                path: 'edit-exercise/:id',
+                component: EditExerciseContainer,
+                name: 'EditExercise'
+            },
+            {
+                path: 'edit-program/:id',
+                component: EditProgramContainer,
+                name: 'EditProgram'
+            }
+        ]
     },
-    {
-        path: '/all-exercises',
-        name: 'AllExercises',
-        component: AllExercises
-    },
-    {
-        path: '/all-programs',
-        name: 'AllPrograms',
-        component: AllPrograms
-    },
-    {
-      path: '/edit-program/:id',
-      name: 'EditProgram',
-      component: EditProgramContainer
-    },
-    {
-        path: '/',
-        name: 'Dashboard',
-        component: EditProgramContainer
-    }
+    { path: '/login', component: Login, name: 'Login', beforeEnter: (to, from, next) => {
+        checkUserSession().then(data => {
+            if (data.authed) {
+                next({ name: 'Dashboard' });
+            } else {
+                next();
+            }
+        });
+    } },
+    { path: '/logout', name: 'Logout', beforeEnter: (to, from, next) => {
+        closeUserSession().then(data => {
+            if (data.success) {
+                next({name: 'Login'});
+            }
+        });
+    } }
 ]
 
 // {
@@ -50,4 +83,4 @@ const router = new VueRouter({
     routes
 })
 
-export default router
+export default router;

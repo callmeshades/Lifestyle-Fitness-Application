@@ -1,12 +1,18 @@
 <template>
-    <div class="container py-4">
-        <ProgramDetails :program="program" />
+    <div class="container">
+        <h5>Creating Program</h5>
+        <hr>
+        <ProgramDetails v-if="details" :program="program" @nextSection="details = !details" />
         <ProgramEditor
+            v-else
             :program="program"
+            :all-exercises="allExercises"
+            @changeSection="details = !details"
             @addModule="addModule"
             @removeModule="removeModule"
             @addExercise="addExercise"
             @deleteExercise="deleteExercise"
+            @createProgram="addProgram"
         />
     </div>
 </template>
@@ -14,6 +20,9 @@
 <script>
     import ProgramDetails from "./components/ProgramDetails";
     import ProgramEditor from "./components/ProgramEditor";
+    import {addNewProgram} from '../utils';
+    import {getAllExercises,parseExerciseBlob} from "../../../utils";
+
     export default {
         name: "EditProgramContainer.vue",
         components: {ProgramEditor, ProgramDetails},
@@ -27,16 +36,17 @@
                     modules: [],
                     notes: []
                 },
-                details: true
+                details: true,
+                allExercises: []
             }
         },
         methods: {
             addModule() {
                 const modulesLength = this.program.modules.length;
                 if (modulesLength > 0) {
-                    this.program.modules.push({id: this.program.modules[modulesLength - 1].id + 1, exercises: [], editable: true})
+                    this.program.modules.push({id: this.program.modules[modulesLength - 1].id + 1, exercises: [], day: 1, title: '', editable: true})
                 } else {
-                    this.program.modules.push({id: 0, exercises: [], editable: true})
+                    this.program.modules.push({id: 0, exercises: [], day: 1, title: '', editable: true})
                 }
 
             },
@@ -65,7 +75,8 @@
                     name: '',
                     sets: 0,
                     reps: 0,
-                    note: ''
+                    note: '',
+                    exercise_id: 0
                 }
                 if (exercisesLength > 0) {
                     const newExericseId = this.program.modules[moduleIndex].exercises[exercisesLength - 1].id + 1;
@@ -79,7 +90,21 @@
                 const moduleIndex = this.program.modules.findIndex(item => item.id === moduleId);
                 const exerciseIndex = this.program.modules[moduleIndex].exercises.findIndex(item => item.id === exerciseId);
                 this.program.modules[moduleIndex].exercises.splice(exerciseIndex, 1);
+            },
+            addProgram() {
+                addNewProgram(this.program).then(data => {
+                    if (data.success) {
+                        this.$router.push({name: 'AllPrograms'})
+                    }
+                });
             }
+        },
+        created() {
+            getAllExercises().then(data => {
+                if (data.success) {
+                    this.allExercises = parseExerciseBlob(data.exercises);
+                }
+            })
         }
     }
 </script>

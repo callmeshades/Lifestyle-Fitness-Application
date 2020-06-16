@@ -1,11 +1,13 @@
 <template>
     <tr>
         <th class="px-4 py-2">Exercise</th>
-        <th class="w-24 px-4 py-2">Sets</th>
-        <th class="w-24 px-4 py-2">Reps</th>
+        <th class="px-4 py-2">Sets</th>
+        <th class="px-4 py-2">Reps</th>
         <th class="px-4 py-2">Notes</th>
         <th class="w-64 px-4 py-2 text-left">
-            <button @click="module.editable = true" class="btn btn-success btn-sm px-3 py-1 rounded-0">Edit</button>
+            <button @click="module.editable = true" class="btn btn-link btn-sm">
+                <i class="fas fa-pencil-alt"></i>
+            </button>
         </th>
     </tr>
 </template>
