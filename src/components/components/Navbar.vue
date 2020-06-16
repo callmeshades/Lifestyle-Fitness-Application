@@ -1,5 +1,5 @@
 <template>
-    <header class="shadow-sm mb-4">
+    <header class="shadow-sm mb-4 border-bottom">
         <nav class="navbar navbar-expand-lg navbar-light bg-white container">
             <a class="navbar-brand">
                 <Logo/>

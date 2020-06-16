@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build:tailwind": "tailwindcss build src/tailwind.css -o src/tailwind.generated.css",
-    "prestart": "npm run build:tailwind",
-    "prebuild": "npm run build:tailwind",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -19,6 +16,7 @@
     "popper.js": "^1.16.1",
     "postcss": "^7.0.32",
     "tailwindcss": "^1.4.6",
+    "uuid": "^8.1.0",
     "vue": "^2.6.11",
     "vue-feather-icons": "^5.0.0",
     "vue-router": "^3.2.0",

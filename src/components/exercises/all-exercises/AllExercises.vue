@@ -1,8 +1,12 @@
 <template>
     <div class="container">
-        All Exercises
-        <div>
-            <button class="btn btn-sm btn-primary" @click="$router.push({name: 'EditExercise', params: {id: 1}})">New Exercise</button>
+        <div class="d-flex justify-content-between align-items-center">
+            <h5>All Exercises</h5>
+            <div>
+                <button class="btn btn-sm btn-dark" @click="$router.push({name: 'EditExercise', params: {id: 1}})">
+                    <PlusIcon />
+                </button>
+            </div>
         </div>
         <AllExercisesTable :all-exercises="allExercises" />
     </div>
@@ -11,9 +15,10 @@
 <script>
     import {getAllExercises} from "../../../utils";
     import AllExercisesTable from "./components/AllExercisesTable";
+    import { PlusIcon } from 'vue-feather-icons';
     export default {
         name: 'AllExercises',
-        components: {AllExercisesTable},
+        components: {AllExercisesTable, PlusIcon},
         data() {
             return {
                 allExercises: []

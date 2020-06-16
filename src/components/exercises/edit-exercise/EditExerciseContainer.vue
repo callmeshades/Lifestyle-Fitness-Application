@@ -1,6 +1,7 @@
 <template>
     <div class="container">
-        {{exerciseDetails.name}}
+        <h5>Editing Exercise</h5>
+        <hr>
         <EditExercise
             :exercise-details="exerciseDetails"
         />

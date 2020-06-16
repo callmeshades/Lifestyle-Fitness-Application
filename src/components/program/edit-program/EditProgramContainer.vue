@@ -12,7 +12,7 @@
             @removeModule="removeModule"
             @addExercise="addExercise"
             @deleteExercise="deleteExercise"
-            @createProgram="addProgram"
+            @createProgram="updateProgram"
         />
     </div>
 </template>
@@ -20,14 +20,17 @@
 <script>
     import ProgramDetails from "./components/ProgramDetails";
     import ProgramEditor from "./components/ProgramEditor";
-    import {addNewProgram} from '../utils';
+    import {getProgramDetails,updateProgram} from '../utils';
     import {getAllExercises,parseExerciseBlob} from "../../../utils";
+    import { v4 as uuidv4 } from 'uuid';
 
     export default {
         name: "EditProgramContainer.vue",
         components: {ProgramEditor, ProgramDetails},
         data() {
             return {
+                isLoading: true,
+                programID: 0,
                 program: {
                     name: '',
                     description: '',
@@ -66,7 +69,7 @@
             },
             addExercise(moduleId) {
                 const moduleIndex = this.program.modules.findIndex(item => item.id === moduleId);
-                let exercisesLength = this.program.modules[moduleIndex].exercises.length;
+                // let exercisesLength = this.program.modules[moduleIndex].exercises.length;
                 // Grab the exercise and create a new ID for the exercise
                 // This is all temporary and will need to be replaced with information from a database in the future
                 // TO BE REMOVED AND REPLACED
@@ -78,12 +81,13 @@
                     note: '',
                     exercise_id: 0
                 }
-                if (exercisesLength > 0) {
-                    const newExericseId = this.program.modules[moduleIndex].exercises[exercisesLength - 1].id + 1;
-                    blankExercise.id = newExericseId;
-                } else {
-                    blankExercise.id = exercisesLength + 1;
-                }
+                // if (exercisesLength > 0) {
+                //     const newExericseId = this.program.modules[moduleIndex].exercises[exercisesLength - 1].id + 1;
+                //     blankExercise.id = newExericseId;
+                // } else {
+                //     blankExercise.id = exercisesLength + 1;
+                // }
+                blankExercise.id = uuidv4();
                 this.program.modules[moduleIndex].exercises.push(blankExercise);
             },
             deleteExercise(exerciseId, moduleId) {
@@ -91,15 +95,26 @@
                 const exerciseIndex = this.program.modules[moduleIndex].exercises.findIndex(item => item.id === exerciseId);
                 this.program.modules[moduleIndex].exercises.splice(exerciseIndex, 1);
             },
-            addProgram() {
-                addNewProgram(this.program).then(data => {
+            fetchProgramDetails() {
+                this.isLoading = true;
+                getProgramDetails(this.$route.params.id).then(data => {
                     if (data.success) {
-                        this.$router.push({name: 'AllPrograms'})
+                        this.programID = data.id;
+                        this.program = JSON.parse(data.blob);
                     }
-                });
+                    this.isLoading = false;
+                })
+            },
+            updateProgram() {
+                updateProgram(this.programID, this.program).then(data => {
+                    if (data.success) {
+                        this.$router.push({ name: "AllPrograms" })
+                    }
+                })
             }
         },
         created() {
+            this.fetchProgramDetails();
             getAllExercises().then(data => {
                 if (data.success) {
                     this.allExercises = parseExerciseBlob(data.exercises);

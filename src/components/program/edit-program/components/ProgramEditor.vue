@@ -12,10 +12,10 @@
             <ModuleTable @deleteModule="$emit('removeModule', module.id)" @addExercise="$emit('addExercise', module.id)" @deleteExercise="deleteExercise" :module="module" :all-exercises="allExercises" />
         </div>
         
-        <div class="mt-2">
+        <div class="mt-2" v-if="program.modules.length > 0">
             <button class="btn btn-block btn-dark"
                 @click="createProgram"
-            >Create Program</button>
+            >Update Program</button>
         </div>
     </div>
 </template>

@@ -14,6 +14,7 @@
                         <template v-if="program.blob.description.trim().length >= 0">No description</template>
                         <template v-else>{{ program.blob.description }}</template>
                     </td>
+                    <td><button @click="getProgramByID(program.id)">Edit</button></td>
                 </tr>
             </tbody>
         </table>
@@ -39,6 +40,9 @@
                     });
                 });
                 this.allPrograms = program_blob;
+            },
+            getProgramByID(programID) {
+                this.$router.push({ name: "EditProgram", params: { id: programID } })
             }
         },
         created() {
