@@ -2,10 +2,11 @@
     <div>
         <div class="d-flex justify-content-center mb-3">
             <Logo />
-            <h4 class="ml-2">Trainers</h4>
+            <h4 class="ml-2">User Login</h4>
         </div>
         <Alert :alertDetails="alertDetails" />
         <LoginForm @submitChildForm="captureForm" :loginData="loginData" />
+        <p class="mt-3 text-muted d-flex justify-content-end">Forgot your password? <a href="#" class="ml-1">Reset it.</a></p>
     </div>
 </template>
 

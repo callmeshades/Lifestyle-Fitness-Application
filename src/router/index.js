@@ -7,6 +7,7 @@ import { checkUserSession, closeUserSession } from '../utils';
 
 import Login from '../views/Login.vue'
 import DashboardContainer from '../components/components/DashboardContainer';
+import Users from "../views/Users";
 import AllExercises from '../components/exercises/all-exercises/AllExercises';
 import AllPrograms from '../components/program/all-programs/AllPrograms';
 import EditProgramContainer from "../components/program/edit-program/EditProgramContainer";
@@ -50,6 +51,7 @@ const routes = [
             }
         ]
     },
+    { path: '/users', component: Users, name: 'Users' },
     { path: '/login', component: Login, name: 'Login', beforeEnter: (to, from, next) => {
         checkUserSession().then(data => {
             if (data.authed) {
