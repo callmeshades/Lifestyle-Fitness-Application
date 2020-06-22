@@ -1,19 +1,24 @@
 <template>
-    <div class="container">
+    <div class="container-xl">
         <h5>Creating Program</h5>
         <hr>
-        <ProgramDetails v-if="details" :program="program" @nextSection="details = !details" />
-        <ProgramEditor
-            v-else
-            :program="program"
-            :all-exercises="allExercises"
-            @changeSection="details = !details"
-            @addModule="addModule"
-            @removeModule="removeModule"
-            @addExercise="addExercise"
-            @deleteExercise="deleteExercise"
-            @createProgram="updateProgram"
-        />
+        <div v-if="isLoading">
+            <Loading/>
+        </div>
+        <div v-else>
+            <ProgramDetails v-if="details" :program="program" @nextSection="details = !details" />
+            <ProgramEditor
+                    v-else
+                    :program="program"
+                    :all-exercises="allExercises"
+                    @changeSection="details = !details"
+                    @addModule="addModule"
+                    @removeModule="removeModule"
+                    @addExercise="addExercise"
+                    @deleteExercise="deleteExercise"
+                    @createProgram="updateProgram"
+            />
+        </div>
     </div>
 </template>
 
@@ -23,10 +28,11 @@
     import {getProgramDetails,updateProgram} from '../utils';
     import {getAllExercises,parseExerciseBlob} from "../../../utils";
     import { v4 as uuidv4 } from 'uuid';
+    import Loading from "../../components/Loading";
 
     export default {
         name: "EditProgramContainer.vue",
-        components: {ProgramEditor, ProgramDetails},
+        components: {Loading, ProgramEditor, ProgramDetails},
         data() {
             return {
                 isLoading: true,
@@ -57,13 +63,6 @@
                 this.program.modules.forEach((item, index) => {
                     if (item.id === id) {
                         this.program.modules.splice(index, 1);
-                    }
-                });
-            },
-            getModuleIndexById(moduleId) {
-                this.program.modules.forEach((item, index) => {
-                    if (item.id === moduleId) {
-                        return index;
                     }
                 });
             },
@@ -100,16 +99,18 @@
                 getProgramDetails(this.$route.params.id).then(data => {
                     if (data.success) {
                         this.programID = data.id;
-                        this.program = JSON.parse(data.blob);
+                        this.program = data.blob;
                     }
                     this.isLoading = false;
                 })
             },
             updateProgram() {
+                this.isLoading = true;
                 updateProgram(this.programID, this.program).then(data => {
                     if (data.success) {
                         this.$router.push({ name: "AllPrograms" })
                     }
+                    this.loading = false;
                 })
             }
         },

@@ -12,6 +12,7 @@ import AllExercises from '../components/exercises/all-exercises/AllExercises';
 import AllPrograms from '../components/program/all-programs/AllPrograms';
 import EditProgramContainer from "../components/program/edit-program/EditProgramContainer";
 import EditExerciseContainer from "../components/exercises/edit-exercise/EditExerciseContainer";
+import AllClients from "../components/clients/all-clients/AllClients";
 
 
 Vue.use(VueRouter)
@@ -29,6 +30,11 @@ const routes = [
             })
         },
         children: [
+            {
+                path: 'all-clients',
+                component: AllClients,
+                name: 'AllClients'
+            },
             {
                 path: 'all-exercises',
                 component: AllExercises,

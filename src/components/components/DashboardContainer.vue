@@ -1,15 +1,19 @@
 <template>
     <div>
-        <Navbar />
-        <router-view />
+        <TopNavbar />
+        <BottomNavbar />
+        <router-view  />
     </div>
 </template>
 
 <script>
-    import Navbar from './Navbar';
+    import TopNavbar from "./navbar/top-navbar/TopNavbar";
+    import BottomNavbar from "./navbar/bottom-navbar/BottomNavbar";
+
     export default {
         name: 'DashboardContainer',
-        components: { Navbar }
+        props: { alert: Object },
+        components: {BottomNavbar, TopNavbar }
     }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container-xl">
         <div class="d-flex justify-content-between align-items-center pb-4">
             <h5>All Programs</h5>
             <button class="btn btn-sm btn-dark" @click="createNewProgram">
@@ -26,7 +26,7 @@
                         this.$router.push({name: 'EditProgram', params: { id: data.id }});
                     }
                 });
-            }
+            },
         }
     }
 </script>

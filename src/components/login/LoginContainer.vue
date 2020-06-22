@@ -5,8 +5,15 @@
             <h4 class="ml-2">User Login</h4>
         </div>
         <Alert :alertDetails="alertDetails" />
-        <LoginForm @submitChildForm="captureForm" :loginData="loginData" />
-        <p class="mt-3 text-muted d-flex justify-content-end">Forgot your password? <a href="#" class="ml-1">Reset it.</a></p>
+        <div v-if="loading" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div v-else>
+            <LoginForm @submitChildForm="captureForm" :loginData="loginData" />
+            <p class="mt-3 text-muted d-flex justify-content-end">Forgot your password? <a href="#" class="ml-1">Reset it.</a></p>
+        </div>
     </div>
 </template>
 
@@ -22,6 +29,7 @@ export default {
         return {
             loginData: { username: '', password: '' },
             csrf_token: '',
+            loading: false,
             alertDetails: {
                 message: '',
                 class: 'danger',
@@ -33,11 +41,20 @@ export default {
         captureForm() {
             this.validateLoginRequest();
         },
+        resetAlert() {
+            this.alertDetails = {
+                class: '',
+                message: '',
+                visible: false
+            }
+        },
         validateLoginRequest() {
+            this.resetAlert();
+            this.loading = true;
             postLoginData(this.loginData.username, this.loginData.password, this.csrf_token)
             .then(data => {
                 if (data.success) {
-                    this.$router.push('/')
+                    this.$router.push('/');
                 } else {
                     this.resetFormData();
                     this.alertDetails = {
@@ -45,6 +62,7 @@ export default {
                         message: data.message,
                         visible: true
                     }
+                    this.loading = false;
                 }
             })
         },
@@ -53,9 +71,11 @@ export default {
         }
     },
     created() {
+        this.loading = true;
         fetchLoginToken().then(data => {
             if (data.token) {
                 this.csrf_token = data.token;
+                this.loading = false;
             }
         })
     }
