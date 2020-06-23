@@ -1,5 +1,8 @@
 <template>
     <div class="container-xl">
+        <div class="pb-4">
+            <h5>All Clients</h5>
+        </div>
         <Loading v-if="loading" />
         <div v-else>
             <Table :all-clients="allClients" />

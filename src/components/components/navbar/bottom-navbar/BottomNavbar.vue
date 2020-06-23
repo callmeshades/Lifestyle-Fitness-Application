@@ -4,8 +4,7 @@
             <div class="dropdown">
                 <button class="btn btn-link dropdown-toggle" id="menuOne" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Users</button>
                 <div class="dropdown-menu" aria-labelledby="menuOne">
-                    <a href="#" class="dropdown-item">One</a>
-                    <a href="#" class="dropdown-item">Two</a>
+                    <router-link to="/all-clients" class="dropdown-item">All Clients</router-link>
                 </div>
             </div>
             <div class="dropdown">
