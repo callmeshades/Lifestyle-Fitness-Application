@@ -29,6 +29,9 @@
                         <button class="btn btn-link btn-sm" @click="getProgramByID(program.id)">
                             <EditIcon size="1.25x" />
                         </button>
+                        <button class="btn btn-link btn-sm" @click="getProgramByID(program.id)">
+                            <XIcon size="1.25x" />
+                        </button>
                     </td>
                 </tr>
             </tbody>
@@ -39,14 +42,14 @@
 
 <script>
     import {getAllPrograms} from '../../utils';
-    import {EditIcon} from 'vue-feather-icons';
+    import {EditIcon, XIcon} from 'vue-feather-icons';
     export default {
         name: "ProgramsTable",
-        components: { EditIcon },
+        components: { EditIcon, XIcon },
+        props: { loading: Boolean },
         data() {
             return {
                 allPrograms: [],
-                loading: false
             }
         },
         methods: {
@@ -65,12 +68,12 @@
             },
         },
         created() {
-            this.loading = true;
+            this.$emit('updateLoading');
             getAllPrograms().then(data => {
                 if (data.success) {
                     this.parseProgramsBlob(data.programs);
                 }
-                this.loading = false;
+                this.$emit('updateLoading');
             })
         }
     }

@@ -13,6 +13,7 @@ import AllPrograms from '../components/program/all-programs/AllPrograms';
 import EditProgramContainer from "../components/program/edit-program/EditProgramContainer";
 import EditExerciseContainer from "../components/exercises/edit-exercise/EditExerciseContainer";
 import AllClients from "../components/clients/all-clients/AllClients";
+import EditClient from "../components/clients/edit-client/EditClient";
 
 
 Vue.use(VueRouter)
@@ -34,6 +35,11 @@ const routes = [
                 path: 'all-clients',
                 component: AllClients,
                 name: 'AllClients'
+            },
+            {
+                path: 'edit-client/:id',
+                component: EditClient,
+                name: 'EditClient'
             },
             {
                 path: 'all-exercises',

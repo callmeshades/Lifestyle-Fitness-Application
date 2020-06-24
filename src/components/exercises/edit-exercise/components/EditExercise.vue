@@ -1,20 +1,31 @@
 <template>
     <div>
-        <div class="d-flex justify-content-start">
-            <p class="nav-link-c" @click="addImage">Add Image</p>
-            <p class="nav-link-c" @click="addVideo">Add Video</p>
+        <div v-if="loading">
+            <Loading />
         </div>
-        <ExerciseForm :exercise-details="exerciseDetails" @deleteImage="deleteImage" @deleteVideo="deleteVideo" @postExerciseForm="postExerciseForm" />
+        <div v-else>
+            <div class="d-flex justify-content-start">
+                <p class="nav-link-c" @click="addImage">Add Image</p>
+                <p class="nav-link-c" @click="addVideo">Add Video</p>
+            </div>
+            <ExerciseForm :exercise-details="exerciseDetails" @deleteImage="deleteImage" @deleteVideo="deleteVideo" @postExerciseForm="postExerciseForm" />
+        </div>
     </div>
 </template>
 
 <script>
 import ExerciseForm from './ExerciseForm';
 import {addNewExercise} from "../../../../utils";
+import Loading from "../../../components/Loading";
 export default {
     name: 'EditExercise',
-    components: {ExerciseForm},
+    components: {Loading, ExerciseForm},
     props: { exerciseDetails: Object },
+    data() {
+        return {
+            loading: false
+        }
+    },
     methods: {
         addImage() {
             let imageId = this.exerciseDetails.images.length;
@@ -40,10 +51,12 @@ export default {
             this.exerciseDetails.videos.url = '';
         },
         postExerciseForm() {
+            this.loading = true;
             addNewExercise(this.exerciseDetails).then(data => {
                 if (data.success) {
-                    this.$router.push('/');
+                    this.$router.push('/all-exercises');
                 }
+                this.loading = false;
             });
         }
     }

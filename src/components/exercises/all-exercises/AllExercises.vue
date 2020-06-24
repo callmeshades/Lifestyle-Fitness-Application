@@ -2,13 +2,14 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center">
             <h5>All Exercises</h5>
-            <div>
+            <div v-if="!loading">
                 <button class="btn btn-sm btn-dark" @click="$router.push({name: 'EditExercise', params: {id: 1}})">
                     <PlusIcon />
                 </button>
             </div>
         </div>
-        <AllExercisesTable :all-exercises="allExercises" />
+        <Loading v-if="loading" />
+        <AllExercisesTable v-else :all-exercises="allExercises" />
     </div>
 </template>
 
@@ -16,12 +17,14 @@
     import {getAllExercises} from "../../../utils";
     import AllExercisesTable from "./components/AllExercisesTable";
     import { PlusIcon } from 'vue-feather-icons';
+    import Loading from "../../components/Loading";
     export default {
         name: 'AllExercises',
-        components: {AllExercisesTable, PlusIcon},
+        components: {Loading, AllExercisesTable, PlusIcon},
         data() {
             return {
-                allExercises: []
+                allExercises: [],
+                loading: false
             }
         },
         methods: {
@@ -38,10 +41,12 @@
             }
         },
         created() {
+            this.loading = true;
             getAllExercises().then(data => {
                 if (data.success) {
                     this.parseBlob(data.exercises);
                 }
+                this.loading = false;
             });
         }
     }

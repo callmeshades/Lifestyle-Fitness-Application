@@ -78,14 +78,14 @@
                     sets: 0,
                     reps: 0,
                     note: '',
-                    exercise_id: 0
+                    exercise_id: 0,
+                    userData: {
+                        set: 0,
+                        reps: 0,
+                        weight: 0,
+                        rir: '' // Reps in reserve
+                    }
                 }
-                // if (exercisesLength > 0) {
-                //     const newExericseId = this.program.modules[moduleIndex].exercises[exercisesLength - 1].id + 1;
-                //     blankExercise.id = newExericseId;
-                // } else {
-                //     blankExercise.id = exercisesLength + 1;
-                // }
                 blankExercise.id = uuidv4();
                 this.program.modules[moduleIndex].exercises.push(blankExercise);
             },
