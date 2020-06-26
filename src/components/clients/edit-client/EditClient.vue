@@ -6,7 +6,7 @@
         <div v-if="loading">
             <Loading />
         </div>
-        <div v-else class="shadow-sm border p-4 round">
+        <div v-else class="shadow-sm border p-4 rounded">
             <form @submit="(e) => e.preventDefault()">
                 <div class="form-group">
                     <label for="firstName">Full Name</label>
@@ -30,17 +30,19 @@
                 </div>
             </form>
         </div>
+        <AssignProgram v-if="clientData.id" :clientId="clientData.id" />
     </div>
 </template>
 
 <script>
     import { getClientById } from "./utils";
     import Loading from "../../components/Loading";
+    import AssignProgram from "./AssignProgram";
 
 
     export default {
         name: "EditClient",
-        components: {Loading},
+        components: {AssignProgram, Loading},
         data() {
             return {
                 clientData: {},
