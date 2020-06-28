@@ -1,37 +1,52 @@
 <template>
     <div class="users-wrapper">
-        <div
-            class="sidebar bg-dark"
-            :class="sidebarActive ? 'sidebar-active' : 'sidebar-inactive'"
-        >
-            <h2>Hi</h2>
-        </div>
         <div class="users-container">
-            <NavBar
-                :sidebar-active="sidebarActive"
-                @changeSidebarState="changeSidebarState"
-            />
-            <ChangePassword/>
+            <NavBar />
+            <Loading v-if="loading" />
+            <router-view v-else />
         </div>
-
     </div>
 </template>
 
 <script>
     import NavBar from "../users/components/navbar/NavBar";
-    import ChangePassword from "../users/change_password/ChangePassword";
+    import { getUserDetails } from "../utils";
+    import Loading from "../components/components/Loading";
     export default {
         name: "Users",
-        components: {ChangePassword, NavBar},
+        components: {Loading, NavBar},
         data() {
             return {
-                sidebarActive: true
+                userData: {},
+                loading: false
             }
         },
-        methods: {
-            changeSidebarState() {
-                this.sidebarActive = !this.sidebarActive;
-            }
+        created() {
+            this.loading = true;
+            getUserDetails().then(data => {
+                if (data.success) {
+                    // If the user doesn't have an active account send them to the login
+                    if (!data.user.active) {
+                        this.$router.push({ name: 'Login' });
+                    }
+
+                    // The current user is not apart of the user group
+                    if (!data.user.groups.filter(e => e.name === 'user').length > 0) {
+                        this.$router.push({ name: 'Login' })
+                    } else {
+                        this.userData = data.user;
+                    }
+
+                    // Check to see if this is the users first login
+                    // if so they need to update their password
+                    if (this.userData.firstLogin && this.$route.name !== 'ChangePassword') {
+                        this.$router.push({ name: 'ChangePassword' })
+                    }
+
+                    this.loading = false;
+
+                }
+            });
         }
     }
 </script>

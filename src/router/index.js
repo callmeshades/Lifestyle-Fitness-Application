@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 
-import { checkUserSession, closeUserSession } from '../utils';
+import { checkUserSession, closeUserSession, checkUserGroup, checkTrainerGroup } from '../utils';
 
 
 import Login from '../views/Login.vue'
@@ -14,17 +14,22 @@ import EditProgramContainer from "../components/program/edit-program/EditProgram
 import EditExerciseContainer from "../components/exercises/edit-exercise/EditExerciseContainer";
 import AllClients from "../components/clients/all-clients/AllClients";
 import EditClient from "../components/clients/edit-client/EditClient";
+import ChangePassword from "../users/change_password/ChangePassword";
 
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 
 const routes = [
-    { path: '/', component: DashboardContainer, name: 'Dashboard',
+    { path: '/trainers', component: DashboardContainer, name: 'Dashboard',
         beforeEnter: (to, from, next) => {
-            checkUserSession().then(data => {
-                if (data.authed) {
-                    next();
+            checkTrainerGroup().then(data => {
+                if (data.success) {
+                    if (data.firstLogin) {
+                        next({ name: 'TrainerChangePassword' });
+                    } else {
+                        next();
+                    }
                 } else {
                     next({ name: 'Login' })
                 }
@@ -63,7 +68,24 @@ const routes = [
             }
         ]
     },
-    { path: '/users', component: Users, name: 'Users' },
+    { path: '/users', component: Users, name: 'Users',
+        beforeEnter: (to, from, next) => {
+            checkUserGroup().then(data => {
+                if (data.success) {
+                    next();
+                } else {
+                    next({ name: 'Login' })
+                }
+            });
+        },
+        children: [
+            {
+                path: 'change-password',
+                component: ChangePassword,
+                name: 'ChangePassword'
+            }
+        ]
+    },
     { path: '/login', component: Login, name: 'Login', beforeEnter: (to, from, next) => {
         checkUserSession().then(data => {
             if (data.authed) {
@@ -82,14 +104,6 @@ const routes = [
     } }
 ]
 
-// {
-//   path: '/about',
-//   name: 'About',
-//   // route level code-splitting
-//   // this generates a separate chunk (about.[hash].js) for this route
-//   // which is lazy-loaded when the route is visited.
-//   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-// }
 
 const router = new VueRouter({
     // mode: 'history',

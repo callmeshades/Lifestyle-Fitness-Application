@@ -8,6 +8,26 @@ export function checkUserSession() {
     .catch(error => error);
 }
 
+export function checkUserGroup() {
+    return fetch('/accounts/user-group-check/', { method: 'GET' })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => error);
+}
+
+export function checkTrainerGroup() {
+    return fetch('/accounts/trainer-group-check/', { method: 'GET' })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => error);
+}
+
+export function getUserDetails() {
+    return fetch('/accounts/api-fetch-user-data', { method: 'GET' })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => error);
+}
 
 export function closeUserSession() {
     return fetch('/accounts/api-logout', {
