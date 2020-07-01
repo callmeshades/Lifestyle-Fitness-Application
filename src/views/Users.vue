@@ -1,17 +1,19 @@
 <template>
-    <div class="users-wrapper">
-        <div class="users-container">
-            <NavBar />
-            <Loading v-if="loading" />
-            <router-view v-else />
+    <div class="full-width">
+        <NavBar />
+        <div class="mt-5" v-if="loading">
+            <Loading />
+        </div>
+        <div v-else class="container-xl mt-4">
+            <router-view :userData="userData" />
         </div>
     </div>
 </template>
 
 <script>
-    import NavBar from "../users/components/navbar/NavBar";
+    import NavBar from "../sections/users/components/navbar/NavBar";
     import { getUserDetails } from "../utils";
-    import Loading from "../components/components/Loading";
+    import Loading from "../components/Loading";
     export default {
         name: "Users",
         components: {Loading, NavBar},
@@ -52,26 +54,5 @@
 </script>
 
 <style lang="scss" scoped>
-    .users-wrapper {
-        display: flex;
 
-        .sidebar {
-            min-width: 200px;
-            max-width: 200px;
-            height: 100vh;
-        }
-
-        .sidebar-active {
-            display: block;
-        }
-
-        .sidebar-inactive {
-            display: none;
-        }
-
-        .users-container {
-            width: 100%;
-        }
-
-    }
 </style>

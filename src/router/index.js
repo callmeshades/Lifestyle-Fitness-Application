@@ -6,15 +6,16 @@ import { checkUserSession, closeUserSession, checkUserGroup, checkTrainerGroup }
 
 
 import Login from '../views/Login.vue'
-import DashboardContainer from '../components/components/DashboardContainer';
+import DashboardContainer from '../sections/trainers/components/DashboardContainer';
 import Users from "../views/Users";
-import AllExercises from '../components/exercises/all-exercises/AllExercises';
-import AllPrograms from '../components/program/all-programs/AllPrograms';
-import EditProgramContainer from "../components/program/edit-program/EditProgramContainer";
-import EditExerciseContainer from "../components/exercises/edit-exercise/EditExerciseContainer";
-import AllClients from "../components/clients/all-clients/AllClients";
-import EditClient from "../components/clients/edit-client/EditClient";
-import ChangePassword from "../users/change_password/ChangePassword";
+import AllExercises from '../sections/trainers/exercises/all-exercises/AllExercises';
+import AllPrograms from '../sections/trainers/program/all-programs/AllPrograms';
+import EditProgramContainer from "../sections/trainers/program/edit-program/EditProgramContainer";
+import EditExerciseContainer from "../sections/trainers/exercises/edit-exercise/EditExerciseContainer";
+import AllClients from "../sections/trainers/clients/all-clients/AllClients";
+import EditClient from "../sections/trainers/clients/edit-client/EditClient";
+import ChangePassword from "../sections/users/change_password/ChangePassword";
+import UsersHome from "../sections/users/home/UsersHome";
 
 
 Vue.use(VueRouter);
@@ -26,7 +27,7 @@ const routes = [
             checkTrainerGroup().then(data => {
                 if (data.success) {
                     if (data.firstLogin) {
-                        next({ name: 'TrainerChangePassword' });
+                        next();
                     } else {
                         next();
                     }
@@ -68,7 +69,7 @@ const routes = [
             }
         ]
     },
-    { path: '/users', component: Users, name: 'Users',
+    { path: '/users', component: Users,
         beforeEnter: (to, from, next) => {
             checkUserGroup().then(data => {
                 if (data.success) {
@@ -80,6 +81,11 @@ const routes = [
         },
         children: [
             {
+                path: '',
+                component: UsersHome,
+                name: 'Users'
+            },
+            {
                 path: 'change-password',
                 component: ChangePassword,
                 name: 'ChangePassword'
@@ -89,7 +95,7 @@ const routes = [
     { path: '/login', component: Login, name: 'Login', beforeEnter: (to, from, next) => {
         checkUserSession().then(data => {
             if (data.authed) {
-                next({ name: 'Dashboard' });
+                next({ name: 'Users' });
             } else {
                 next();
             }
