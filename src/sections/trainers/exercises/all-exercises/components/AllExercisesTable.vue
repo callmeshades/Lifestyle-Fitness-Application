@@ -10,24 +10,22 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="exercise in allExercises" :key="exercise.id">
-                <td>{{ exercise.name }}</td>
-                <td>{{ exercise.blob.notes }}</td>
-                <td>{{ exercise.blob.description }}</td>
-                <td>{{ exercise.blob.images.length > 0 ? 'Yes' : 'No' }}</td>
-                <td>{{ exercise.blob.videos.hasVideo > 0 ? 'Yes' : 'No' }}</td>
-            </tr>
+            <template v-for="exercise in allExercises">
+                <ExerciseRow :exercise="exercise" :key="exercise.id" />
+            </template>
         </tbody>
     </table>
 </template>
 
 <script>
-    export default {
-        name: "AllExercisesTable",
-        props: {
-            allExercises: Array
-        }
-    }
+  import ExerciseRow from "./ExerciseRow";
+  export default {
+    name: "AllExercisesTable",
+    components: {ExerciseRow},
+    props: {
+          allExercises: Array
+      }
+  }
 </script>
 
 <style scoped>

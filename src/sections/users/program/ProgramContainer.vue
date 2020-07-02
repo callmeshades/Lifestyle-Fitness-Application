@@ -9,15 +9,20 @@
             </div>
             <div v-else>
                 <ParentListing
-                        v-if="isHome"
+                        v-if="page === 'home'"
                         :assignment="assignedProgram.weeks"
                         @viewWeek="viewWeek"
                 />
                 <ProgramView
-                        v-else
+                        v-if="page === 'program'"
                         :assignment="assignedProgram.weeks[viewingWeek.index]"
                         @goBackHome="clearWeek"
                         @saveAssignment="saveAssignment"
+                />
+                <DayView
+                  v-if="page === 'day'"
+                  :assignment="assignedProgram.weeks[viewingWeek.index]"
+                  @goBackHome="clearWeek"
                 />
             </div>
         </div>
@@ -29,17 +34,18 @@
     import Loading from "../../../components/Loading";
     import NoProgram from "./components/NoProgram";
     import ParentListing from "./components/program_listing/ParentListing";
-    import ProgramView from "./components/program_view/ProgramView";
+    import ProgramView from "./components/module_view/ProgramView";
+    import DayView from "./components/day_view/DayView";
 
     export default {
         name: "ProgramContainer",
-        components: {ProgramView, ParentListing, NoProgram, Loading},
+        components: {ProgramView, ParentListing, NoProgram, DayView, Loading},
         data() {
             return {
                 assignedProgram: [],
                 hasAssignment: false,
                 loading: false,
-                isHome: true,
+                page: 'home',
                 viewingWeek: {
                     id: 0,
                     index: 0
@@ -50,13 +56,13 @@
             viewWeek(weekId) {
                 this.assignedProgram.weeks.forEach((item, index) => {
                     if (item.id === weekId) {
-                        this.isHome = false;
+                        this.page = 'day';
                         this.viewingWeek = { id: item.id, index: index };
                     }
                 });
             },
             clearWeek() {
-                this.isHome = true;
+                this.page = 'home';
                 this.viewingWeek = { id: 0, index: 0 };
             },
             saveAssignment() {

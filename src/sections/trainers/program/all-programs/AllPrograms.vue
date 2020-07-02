@@ -23,16 +23,16 @@
             }
         },
         methods: {
-            updateLoading() { this.loading = !this.loading; },
+            updateLoading(newBool) { this.loading = newBool; },
             createNewProgram() {
                 // Create a new blank program and save in the DB
                 // Fetch and redirect based on the programs ID
-                this.updateLoading();
+                this.updateLoading(true);
                 createBlankProgram().then(data => {
                     if (data.success) {
                         this.$router.push({name: 'EditProgram', params: { id: data.id }});
                     }
-                    this.updateLoading();
+                    this.updateLoading(false);
                 });
             },
         }

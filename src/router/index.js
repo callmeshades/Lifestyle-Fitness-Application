@@ -17,6 +17,7 @@ import EditClient from "../sections/trainers/clients/edit-client/EditClient";
 import ChangePassword from "../sections/users/change_password/ChangePassword";
 import UsersHome from "../sections/users/home/UsersHome";
 
+import EditProgram from "../sections/trainers/program/edit_program_new/EditProgram";
 
 Vue.use(VueRouter);
 
@@ -66,6 +67,11 @@ const routes = [
                 path: 'edit-program/:id',
                 component: EditProgramContainer,
                 name: 'EditProgram'
+            },
+            {
+                path: 'edit-program-new/:id',
+                component: EditProgram,
+                name: 'EditProgramNew'
             }
         ]
     },

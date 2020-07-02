@@ -19,8 +19,8 @@
 
 <script>
 import LoginForm from "./LoginForm";
-import Alert from '../../../components/Alert';
-import Logo from '../../../components/Logo';
+import Alert from '../Alert';
+import Logo from '../Logo';
 import { postLoginData, fetchLoginToken } from './utils';
 export default {
     name: 'LoginContainer',

@@ -29,7 +29,7 @@
                         <button class="btn btn-link btn-sm" @click="getProgramByID(program.id)">
                             <EditIcon size="1.25x" />
                         </button>
-                        <button class="btn btn-link btn-sm" @click="getProgramByID(program.id)">
+                        <button class="btn btn-link btn-sm" @click="deleteProgramByID(program.id)">
                             <XIcon size="1.25x" />
                         </button>
                     </td>
@@ -41,8 +41,10 @@
 </template>
 
 <script>
-    import {getAllPrograms} from '../../utils';
+    import {getAllPrograms, deleteProgram} from '../../utils';
     import {EditIcon, XIcon} from 'vue-feather-icons';
+    import Swal from 'sweetalert2';
+
     export default {
         name: "ProgramsTable",
         components: { EditIcon, XIcon },
@@ -53,6 +55,15 @@
             }
         },
         methods: {
+            fetchPrograms() {
+              this.updateLoading(true);
+              getAllPrograms().then(data => {
+                if (data.success) {
+                  this.parseProgramsBlob(data.programs);
+                }
+                this.updateLoading(false);
+              });
+            },
             parseProgramsBlob(programs) {
                 let program_blob = [];
                 programs.forEach(item => {
@@ -66,15 +77,45 @@
             getProgramByID(programID) {
                 this.$router.push({ name: "EditProgram", params: { id: programID } })
             },
+            deleteProgramByID(programId) {
+              Swal.fire({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover this program once it\'s gone!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it',
+                cancelButtonText: 'Cancel'
+              }).then((result) => {
+                this.updateLoading(true);
+                if (result.value) {
+                  deleteProgram(programId).then(data => {
+                    if (data.success) {
+                      Swal.fire(
+                          'Deleted!',
+                          'Successfully deleted the program.',
+                          'success'
+                      );
+                    }
+                    else {
+                      Swal.fire(
+                          'Error',
+                          data.message,
+                          'error'
+                      );
+                    }
+                    this.updateLoading(false);
+                  }).then(() => {
+                    this.fetchPrograms();
+                  });
+                }
+              })
+            },
+            updateLoading(newBool) {
+              this.$emit('updateLoading', newBool);
+            }
         },
         created() {
-            this.$emit('updateLoading');
-            getAllPrograms().then(data => {
-                if (data.success) {
-                    this.parseProgramsBlob(data.programs);
-                }
-                this.$emit('updateLoading');
-            })
+          this.fetchPrograms();
         }
     }
 </script>

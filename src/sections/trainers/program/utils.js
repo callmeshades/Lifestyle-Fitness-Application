@@ -11,9 +11,10 @@ const blank_program = {
 export function getAllPrograms() {
     return fetch('/trainer/api/get-programs/', {
         method: 'GET'
-    }).then(response => response.json())
-    .then(data => data)
-    .catch(error => error);
+    })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => error);
 }
 
 
@@ -22,7 +23,8 @@ export function createBlankProgram() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(blank_program)
-    }).then(response => response.json())
+    })
+        .then(response => response.json())
         .then(data => data)
         .catch(error => error);
 }
@@ -32,7 +34,8 @@ export function getProgramDetails(programID) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({programID: programID})
-    }).then(response => response.json())
+    })
+        .then(response => response.json())
         .then(data => data)
         .catch(error => error);
 }
@@ -42,7 +45,19 @@ export function updateProgram(programID, programDetails) {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({programID: programID, programDetails: programDetails})
-    }).then(response => response.json())
-    .then(data => data)
-    .catch(error => error);
+    })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => error);
+}
+
+export function deleteProgram(programID) {
+    return fetch('/trainer/api/delete-program/', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ program_id: programID })
+    })
+        .then(response => response.json())
+        .then(data => data)
+        .catch(error => error);
 }
